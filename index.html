@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack</title>
+    
+    <link rel="shortcut icon" href="blackjack.png" type="image/x-icon">
+    <script>
+        var naipes = ['♣', '♦', '♥', '♠'];
+        var numero = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        var baralho = [];
+        var youMao = [];
+        var dealerMao = [];
+        var youPontos = 0;
+        var dealerPontos = 0;
+        var dealer = 'dealer';
+        var you = 'you';
+        let contadorAsYou = 0;
+        let contadorAsDealer = 0;
+
+        criarBaralho();
+
+
+
+        function newGame() {
+            document.getElementById('displayStartButton').classList.add('remove');
+            document.getElementById('newGame').classList.remove('remove');
+            embaralhar();
+            displayCartas(you);
+            displayCartas(dealer);
+
+
+
+            displayCartas(you);
+            cartadealer = displayCartas(dealer).textContent;
+
+            let contentor = document.getElementById('incognito');
+            contentor.innerText = ' ? ' + cartadealer;
+
+            console.log(dealerPontos);
+            console.log(youPontos);
+            atualizapontos();
+
+
+
+        }
+
+        function criarBaralho() {
+            naipes.forEach(function (naipe) {
+                numero.forEach(function (numero) {
+                    baralho.push(naipe + ' ' + numero);
+                });
+            });
+        }
+
+        function embaralhar() {
+            var m = baralho.length;
+            var t;
+            var i;
+
+
+            while (m) {
+
+
+                i = Math.floor(Math.random() * m--);
+
+
+                t = baralho[m];
+                baralho[m] = baralho[i];
+                baralho[i] = t;
+            }
+
+            return baralho;
+        }
+
+        function escolherCarta() {
+
+            k = baralho.length;
+            i = Math.floor(Math.random() * k);
+
+            cartaEscolhida = baralho[i];
+
+            baralho.splice(i, 1);
+
+            return cartaEscolhida;
+        }
+
+
+
+        function displayCartas(jogador) {
+
+            cartaEscolhida = escolherCarta();
+
+            var porCartas = document.getElementsByClassName(jogador)[0];
+
+            var contentorCarta = document.createElement('div');
+
+            // var carta = document.createElement('img');
+            // img.src = '';
+            var carta = document.createElement('p');
+            carta.classList.add('cardsMargin');
+            carta.textContent = cartaEscolhida;
+
+            carta.dataset.valorReal = cartaEscolhida;
+
+            contentorCarta.appendChild(carta);
+            porCartas.appendChild(contentorCarta);
+
+            if (jogador == 'you') {
+
+
+                youMao.push(carta.textContent);
+                pontos(cartaEscolhida, jogador);
+
+            }
+            else if (jogador == 'dealer') {
+
+                dealerMao.push(carta.textContent);
+                pontos(cartaEscolhida, jogador);
+
+            }
+            return carta;
+
+
+        }
+
+        function pontos(cartaEscolhida, jogador) {
+
+            let num = 0;
+
+
+            for (let i = 0; i < cartaEscolhida.length; i++) {
+
+                switch (cartaEscolhida[i]) {
+                    case 'K':
+                    case 'Q':
+                    case 'J':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 10;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 10;
+
+                        }
+
+
+
+
+                        break;
+
+                    case 'A':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 11;
+                            contadorAsDealer++;
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 11;
+                            contadorAsYou++;
+                        }
+
+
+                        break;
+
+
+                    case '1':
+                        if (cartaEscolhida[i + 1] === '0') {
+
+                            if (jogador == 'dealer') {
+                                dealerPontos += 10;
+
+                            }
+
+                            if (jogador == 'you') {
+                                youPontos += 10;
+
+                            }
+
+
+                        }
+                        i++;
+                        break;
+
+                    case '2':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 2;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 2;
+
+                        }
+
+
+                        break;
+
+                    case '3':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 3;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 3;
+
+                        }
+
+                        break;
+
+                    case '4':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 4;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 4;
+
+                        }
+
+
+                        break;
+
+
+                    case '5':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 5;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 5;
+
+                        }
+
+
+                        break;
+
+                    case '6':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 6;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 6;
+
+                        }
+
+
+                        break;
+
+
+                    case '7':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 7;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 7;
+
+                        }
+
+
+                        break;
+
+                    case '8':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 8;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 8;
+
+                        }
+
+
+                        break;
+
+                    case '9':
+                        if (jogador == 'dealer') {
+                            dealerPontos += 9;
+
+                        }
+
+                        if (jogador == 'you') {
+                            youPontos += 9;
+
+                        }
+
+
+                        break;
+                }
+            }
+
+
+            if (dealerPontos > 21 && jogador == 'dealer' && contadorAsDealer > 0) {
+                dealerPontos -= 10;
+                contadorAsDealer--;
+            }
+
+            if (youPontos > 21 && jogador == 'you' && contadorAsYou > 0) {
+                youPontos -= 10;
+                contadorAsYou--;
+            }
+
+
+
+        }
+
+
+
+        function hit() {
+
+            if (youPontos < 21) {
+
+                displayCartas(you);
+                atualizapontos();
+                console.log("------------");
+                console.log(dealerPontos);
+                console.log(youPontos);
+                if (youPontos > 21) {
+                    verificaCondicao();
+
+
+
+                    document.getElementById('derrota').classList.remove('remove');
+                    // document.getElementById('newGame').classList.add('remove');
+
+                }
+
+
+
+            }
+        }
+
+        function stand() {
+
+
+            while (dealerPontos < 17) {
+
+                displayCartas(dealer);
+                console.log("------------");
+                console.log(dealerPontos);
+                console.log(youPontos);
+
+            }
+            verificaCondicao();
+        }
+
+
+
+        function verificaCondicao() {
+            document.getElementsByClassName('displayButtons')[0].style.display = 'none'
+            document.getElementById('incognito').style.display = ('none');
+            document.getElementById('normal').style.display = ('flex');
+            let contentor = document.getElementsByTagName('h2')[0];
+            contentor.innerText = 'Dealer: ' + dealerPontos;
+            contentor = document.getElementsByTagName('h2')[1];
+            contentor.innerText = 'You: ' + youPontos;
+
+
+
+
+            if (dealerPontos == youPontos) {
+
+
+                document.getElementById('empate').classList.remove('remove');
+                //document.getElementById('newGame').classList.add('remove');
+            }
+            else if (dealerPontos > 21) {
+
+
+                document.getElementById('vitoria').classList.remove('remove');
+                //document.getElementById('newGame').classList.add('remove');
+            }
+            else if (youPontos > 21) {
+
+
+                document.getElementById('derrota').classList.remove('remove');
+                //document.getElementById('newGame').classList.add('remove');
+            }
+
+            else if (youPontos > dealerPontos) {
+
+                document.getElementById('vitoria').classList.remove('remove');
+                playAudio();
+                //document.getElementById('newGame').classList.add('remove');
+            }
+            else if (dealerPontos > youPontos) {
+
+
+                document.getElementById('derrota').classList.remove('remove');
+                //document.getElementById('newGame').classList.add('remove');
+            }
+
+        }
+
+
+        function atualizapontos() {
+            let contentor = document.getElementsByTagName('h2')[1];
+            contentor.innerText = 'You: ' + youPontos;
+
+        }
+
+        function playAudio() {
+            var audio = new Audio('donpollo.mp3'); // Replace with the path to your audio file
+            audio.preload = 'auto';
+            audio.play();
+            audio.loop = true;
+        }
+
+        function restart() {
+            window.location.reload();
+        }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2em;
+            text-align: center;
+        }
+
+        .displayStartButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20%;
+        }
+
+        .displayButtons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 5%;
+        }
+
+
+        .remove {
+            display: none;
+        }
+
+
+        .startButton {
+            width: 15rem;
+            height: 5rem;
+            align-items: center;
+            border-radius: 20px;
+            border: 5px solid #bc4949;
+            background-color: #ffffff;
+            font-size: 2em;
+
+
+
+        }
+
+        .button {
+
+            width: 13rem;
+            height: 4rem;
+            align-items: center;
+            border-radius: 20px;
+            border: 5px solid #bc4949;
+            background-color: #ffffff;
+            font-size: 2em;
+            margin: 0px 50px 0px 50px;
+        }
+
+        .startButton,
+        .startButton:active {
+            background-color: #bc4949;
+            border: 5px solid #ffffff;
+        }
+
+        .you {
+            display: flex;
+            align-content: center;
+            background-color: aliceblue;
+            justify-content: center;
+
+        }
+
+        .cardsMargin {
+
+            margin: 10px;
+        }
+
+        .dealer {
+            display: flex;
+            background-color: aliceblue;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .cartas {
+            margin: 10px;
+        }
+
+        #normal {
+            display: none;
+        }
+
+        p {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body class="bg-neutral-900">
+    <main class="m-auto max-w-screen-xl bg-neutral-800 text-neutral-300 pb-10">
+    <div class="mx-10 my-10 py-10 flex justify-around">
+            <button title="Go Back"
+                onclick="restart()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="white"
+                    class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                    <path
+                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z">
+                    </path>
+                    <path fill-rule="evenodd"
+                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z">
+                    </path>
+                </svg>
+                <p class="text-neutral-100">Restart</p>
+            </button>
+        
+        <h1 class="text-neutral-100 text-3xl my-10 pt-10">BlackJack</h1>
+    </div>
+        
+        <div>
+
+            <div id="displayStartButton" class="displayStartButton">
+                <button class="startButton" onclick="newGame()">Start Game</button>
+            </div>
+
+            <div id="newGame" class="remove ">
+                <h2 class="my-10">Dealer:</h2>
+                <div class="dealer bg-neutral-900 mx-10 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl" id ="normal">
+
+                </div>
+                <div class="dealer bg-neutral-900 mx-10 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl" id="incognito">
+
+                </div>
+                <h2 class="my-10">You:</h2>
+                <div class="you bg-neutral-900 mx-10 mb-10 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
+
+                </div>
+
+                <div class="displayButtons ">
+                    <button class="button bg-neutral-800" onclick="hit()">Hit</button>
+                    <button class="button bg-neutral-800" onclick="stand()">Stand</button>
+                </div>
+
+
+            </div>
+
+            <div id="empate" class="remove">
+                <h2>Tie</h2>
+
+
+            </div>
+
+            <div id="vitoria" class="remove">
+
+                <h2>You win!!</h2>
+
+            </div>
+
+            <div id="derrota" class="remove">
+
+                <h2>You lost</h2>
+
+            </div>
+        </div>
+    </main>
+
+
+
+
+</body>
+
+</html>
