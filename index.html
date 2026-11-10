@@ -40,8 +40,6 @@
             let contentor = document.getElementById('incognito');
             contentor.innerText = ' ? ' + cartadealer;
 
-            console.log(dealerPontos);
-            console.log(youPontos);
             atualizapontos();
 
 
@@ -324,9 +322,6 @@
 
                 displayCartas(you);
                 atualizapontos();
-                console.log("------------");
-                console.log(dealerPontos);
-                console.log(youPontos);
                 if (youPontos > 21) {
                     verificaCondicao();
 
@@ -348,9 +343,6 @@
             while (dealerPontos < 17) {
 
                 displayCartas(dealer);
-                console.log("------------");
-                console.log(dealerPontos);
-                console.log(youPontos);
 
             }
             verificaCondicao();
